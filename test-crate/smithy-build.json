@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "maven": {
+    "dependencies": ["dev.hmellema.smithy.rust:test-code-generator:1.0.0"]
+  },
+  "plugins": {
+    "test-rust-codegen": {
+      // No arguments to this test generator
+    }
+  }
+}

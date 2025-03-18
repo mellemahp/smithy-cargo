@@ -1,0 +1,15 @@
+[package]
+name = "test-crate"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+include_dir = "0.7.4"
+smithy-cargo = "0.1.0"
+
+[build-dependencies]
+smithy-cargo = "0.1.0"
+
+[patch.crates-io]
+smithy-cargo = { path = ".." }

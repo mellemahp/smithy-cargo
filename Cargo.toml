@@ -1,11 +1,11 @@
 [package]
 name = "smithy-cargo"
 description = "A library for Cargo build scripts to build Smithy models."
+authors = ["Hunter Mellema <hunter@hmellema.space>"]
 version = "0.1.0"
 edition = "2024"
 license-file = "LICENSE"
+readme = "README.md"
 repository = "https://github.com/mellemahp/smithy-cargo"
-keywords = ["build", "buildtool", "api", "codegen", "smithy"]
+keywords = ["build-dependencies", "smithy"]
 categories = ["development-tools::build-utils"]
-
-[dependencies]
