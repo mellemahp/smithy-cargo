@@ -1,8 +1,10 @@
-// 
+
 include!(concat!(env!("SMITHY_OUTPUT_DIR"), "/source/test-rust-codegen/demo.rs"));
 
 #[cfg(test)]
 mod tests {
+   // use crate::Rectangle;
+
     use crate::Rectangle;
 
     #[test]
