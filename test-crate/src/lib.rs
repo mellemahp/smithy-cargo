@@ -1,15 +1,21 @@
 
-include!(concat!(env!("SMITHY_OUTPUT_DIR"), "/source/test-rust-codegen/demo.rs"));
+
 
 #[cfg(test)]
 mod tests {
-   // use crate::Rectangle;
+    use smithy_cargo::add_smithy_files;
 
-    use crate::Rectangle;
+    add_smithy_files!("source", "test-rust-codegen");
+
+   // use crate::Rectangle;
 
     #[test]
     fn test_add() {
         println!("STUFF!!!!");
+        let _x = Rectangle {
+            width: 52,
+            height: 50
+        };
         // let result = SmithyBuild::new()
         //     .execute()
         //     .expect("Failed building Smithy");

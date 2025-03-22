@@ -9,3 +9,7 @@ readme = "README.md"
 repository = "https://github.com/mellemahp/smithy-cargo"
 keywords = ["build-dependencies", "smithy"]
 categories = ["development-tools::build-utils"]
+
+[dependencies]
+crabtime = "1.1.1"
+walkdir = "2.5.0"
