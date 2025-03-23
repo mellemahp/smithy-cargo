@@ -20,9 +20,10 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Install Smithy CLI
         run: |
-          mkdir -p /tmp/smithy
-          curl -L https://github.com/smithy-lang/smithy/releases/latest/download/smithy-cli-linux-x86_64.zip -o /tmp/smithy-cli-linux.tar.gz
-          tar xvzf /tmp/smithy-cli-linux.tar.gz -C /tmp/smithy
-          sudo /tmp/smithy/install
+          mkdir -p /tmp/smithy-install/smithy
+          curl -L https://github.com/smithy-lang/smithy/releases/latest/download/smithy-cli-linux-x86_64.zip -o /tmp/smithy-install/smithy-cli-linux-x86_64.zip
+          unzip -qo /tmp/smithy-install/smithy-cli-linux-x86_64.zip -d /tmp/smithy-install
+          mv /tmp/smithy-install/smithy-cli-linux-x86_64/* /tmp/smithy-install/smithy
+          sudo /tmp/smithy-install/smithy/install
       - run: cargo build --verbose
       - run: cargo test --verbose
