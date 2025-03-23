@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG: true
 
 jobs:
   build_and_test:
