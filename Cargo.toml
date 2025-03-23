@@ -1,15 +1,39 @@
-[package]
-name = "smithy-cargo"
-description = "A library for Cargo build scripts to build Smithy models."
-authors = ["Hunter Mellema <hunter@hmellema.space>"]
+[workspace]
+resolver = "2"
+members = [
+    "smithy-cargo",
+    "smithy-cargo-macros",
+    "test-crate"
+]
+default-members = [
+    "smithy-cargo",
+    "smithy-cargo-macros",
+    "test-crate"
+]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+overflow-checks = false
+
+# Config for 'cargo release'
+[workspace.metadata.release]
+# Don't release any crate unless its manifest has `release = true`
+release = false
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 license-file = "LICENSE"
 readme = "README.md"
-repository = "https://github.com/mellemahp/smithy-cargo"
+authors = ["Hunter Mellema <hunter@hmellema.space>"]
 keywords = ["build-dependencies", "smithy"]
 categories = ["development-tools::build-utils"]
 
-[dependencies]
+[workspace.dependencies]
+smithy-cargo = { version = "0.1.0", path = "./smithy-cargo" }
+smithy-cargo-macros = { version = "0.1.0", path = "./smithy-cargo-macros" }
 crabtime = "1.1.1"
 walkdir = "2.5.0"

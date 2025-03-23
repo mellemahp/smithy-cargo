@@ -12,31 +12,6 @@ macro_rules! p {
     }
 }
 
-// TODO: Docs!
-#[crabtime::function]
-#[macro_export]
-fn add_smithy_files(
-    pattern!($projection:literal, $plugin:literal): _
-) {
-    // TODO: could this be a build dep?
-    #![dependency(walkdir = "2.5.0")]
-    use walkdir::WalkDir;
-    use std::ffi::{OsStr};
-
-    let smithy_path = concat!(env!("SMITHY_OUTPUT_DIR"), "/", $projection, "/", $plugin, "/");
-
-    // TODO: Should this filter on `.rs` extension?
-    for path in WalkDir::new(smithy_path).into_iter()
-        .filter_map(|e| e.ok())
-        .filter(|e| e.file_type().is_file())
-        .map(|e| format!("\"{}\"", e.path().to_owned().display()))
-    {
-        crabtime::output! {
-            include!({{path}});
-        }
-    }
-}
-
 pub struct SmithyBuild {
     // Path to use as root for smithy build process
     path: PathBuf,

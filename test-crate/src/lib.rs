@@ -1,9 +1,8 @@
-
-
+extern crate smithy_cargo_macros;
 
 #[cfg(test)]
 mod tests {
-    use smithy_cargo::add_smithy_files;
+    use smithy_cargo_macros::add_smithy_files;
 
     add_smithy_files!("source", "test-rust-codegen");
 

@@ -1,3 +1,5 @@
+extern crate smithy_cargo;
+
 use std::process::Command;
 use smithy_cargo::SmithyBuild;
 

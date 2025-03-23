@@ -1,17 +1,13 @@
 [package]
 name = "test-crate"
-version = "0.1.0"
-edition = "2024"
+description = "Crate that tests build tooling provided by smithy-cargo"
+version.workspace = true
 publish = false
+edition.workspace = true
 
 [dependencies]
-smithy-cargo = "0.1.0"
-crabtime = "1.1.1"
-walkdir = "2.5.0"
+smithy-cargo-macros.workspace = true
+crabtime.workspace = true
 
 [build-dependencies]
-smithy-cargo = "0.1.0"
-walkdir = "2.5.0"
-
-[patch.crates-io]
-smithy-cargo = { path = ".." }
+smithy-cargo.workspace = true
