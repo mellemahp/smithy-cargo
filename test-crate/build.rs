@@ -1,7 +1,7 @@
 extern crate smithy_cargo;
 
-use std::process::Command;
 use smithy_cargo::SmithyBuild;
+use std::process::Command;
 
 fn main() {
     // Publish the test code generator to maven local so the
@@ -9,10 +9,9 @@ fn main() {
     Command::new("./gradlew")
         .current_dir("test-code-generator")
         .arg("publishToMavenLocal")
-        .output().unwrap();
+        .output()
+        .unwrap();
     println!("cargo::rerun-if-changed=test-code-generator");
 
-    SmithyBuild::new()
-        .execute()
-        .expect("Smithy Build failed");
+    SmithyBuild::new().execute().expect("Smithy Build failed");
 }

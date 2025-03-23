@@ -16,8 +16,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
+
       - name: Install Smithy CLI
         run: |
           mkdir -p /tmp/smithy-install/smithy
@@ -25,5 +27,9 @@ jobs:
           unzip -qo /tmp/smithy-install/smithy-cli-linux-x86_64.zip -d /tmp/smithy-install
           mv /tmp/smithy-install/smithy-cli-linux-x86_64/* /tmp/smithy-install/smithy
           sudo /tmp/smithy-install/smithy/install
-      - run: cargo build --verbose
-      - run: cargo test --verbose
+
+      - name: Run build
+        run: cargo build --verbose
+
+      - name: Run tests
+        run: cargo test --verbose

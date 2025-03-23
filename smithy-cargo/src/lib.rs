@@ -1,8 +1,8 @@
-use std::{env, io};
-use std::path::{Path, PathBuf};
-use std::process::{Command, Output};
 use std::ffi::{OsStr, OsString};
 use std::io::ErrorKind;
+use std::path::{Path, PathBuf};
+use std::process::{Command, Output};
+use std::{env, io};
 
 // Workaround for cargo not printing out log messages from build
 // See: https://github.com/rust-lang/cargo/issues/985#issuecomment-1071667472
@@ -12,6 +12,7 @@ macro_rules! p {
     }
 }
 
+#[derive(Default)]
 pub struct SmithyBuild {
     // Path to use as root for smithy build process
     path: PathBuf,
@@ -43,7 +44,8 @@ pub struct SmithyBuild {
 impl SmithyBuild {
     pub fn new() -> SmithyBuild {
         let path = env::current_dir().unwrap();
-        let out_dir = path.join(env::var("OUT_DIR").unwrap_or("target".into()))
+        let out_dir = path
+            .join(env::var("OUT_DIR").unwrap_or("target".into()))
             .join(String::from("smithy"));
         SmithyBuild {
             path,
@@ -67,7 +69,7 @@ impl SmithyBuild {
     /// Set the relative path to use as the root for the Smithy build process
     ///
     /// The default path for executing the build process is the crate root dir.
-    pub fn path<>(mut self, path: impl AsRef<Path>) -> SmithyBuild {
+    pub fn path(mut self, path: impl AsRef<Path>) -> SmithyBuild {
         self.path = env::current_dir().unwrap().join(path);
         self
     }
@@ -147,7 +149,8 @@ impl SmithyBuild {
         K: AsRef<OsStr>,
         V: AsRef<OsStr>,
     {
-        self.env.push((key.as_ref().to_owned(), value.as_ref().to_owned()));
+        self.env
+            .push((key.as_ref().to_owned(), value.as_ref().to_owned()));
         self
     }
 
@@ -176,11 +179,21 @@ impl SmithyBuild {
         }
 
         // Flags
-        if self.no_config { args.push("--no-config".into()) };
-        if self.debug { args.push("--debug".into()); }
-        if self.force_color { args.push("--force-color".into()); }
-        if self.quiet { args.push("--quiet".into()) };
-        if self.allow_unknown_traits { args.push("--aut".into()) };
+        if self.no_config {
+            args.push("--no-config".into())
+        };
+        if self.debug {
+            args.push("--debug".into());
+        }
+        if self.force_color {
+            args.push("--force-color".into());
+        }
+        if self.quiet {
+            args.push("--quiet".into())
+        };
+        if self.allow_unknown_traits {
+            args.push("--aut".into())
+        };
 
         // Add models, starting with model/ default dir if it exists
         if self.path.join("model").exists() {
@@ -209,7 +222,10 @@ impl SmithyBuild {
         }
 
         // Set env var so it can be used to help include output in your code
-        println!("cargo:rustc-env=SMITHY_OUTPUT_DIR={}", self.out_dir.display());
+        println!(
+            "cargo:rustc-env=SMITHY_OUTPUT_DIR={}",
+            self.out_dir.display()
+        );
 
         Ok(output)
     }
