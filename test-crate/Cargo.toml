@@ -11,3 +11,6 @@ crabtime.workspace = true
 
 [build-dependencies]
 smithy-cargo.workspace = true
+
+[lints.rust]
+dead_code = "allow"
