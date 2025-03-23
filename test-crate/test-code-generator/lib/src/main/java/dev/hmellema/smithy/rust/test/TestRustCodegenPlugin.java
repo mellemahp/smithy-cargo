@@ -22,18 +22,26 @@ public final class TestRustCodegenPlugin implements SmithyBuildPlugin {
     @Override
     public void execute(PluginContext context) {
         LOGGER.info("Executing codegen");
-        // TODO: Actually depend on the shapes a bit
-        var file = context.getFileManifest().addFile(Path.of("demo.rs"));
+        write(context, "demo.rs", """
+        pub struct Rectangle {
+            pub width: u32,
+            pub height: u32,
+        }
+        """);
+        write(context, "other.rs", """
+        pub struct Generated {
+            pub a: u32
+        }
+        """);
+        LOGGER.info("Codegen complete");
+    }
+
+    private static final void write(PluginContext context, String path, String data) {
+        var file = context.getFileManifest().addFile(Path.of(path));
         try (var writer = new FileWriter(file.toFile())) {
-            writer.append("""
-                    pub struct Rectangle {
-                        width: u32,
-                        height: u32,
-                    }
-                    """);
+            writer.append(data);
         } catch (IOException ioException) {
             throw new UncheckedIOException(ioException);
         }
-        LOGGER.info("Codegen complete");
     }
 }

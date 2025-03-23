@@ -6,19 +6,21 @@ mod tests {
 
     add_smithy_files!("source", "test-rust-codegen");
 
-   // use crate::Rectangle;
-
     #[test]
-    fn test_add() {
-        println!("STUFF!!!!");
-        let _x = Rectangle {
+    fn test_added_demo() {
+        let shape = Rectangle {
             width: 52,
             height: 50
         };
-        // let result = SmithyBuild::new()
-        //     .execute()
-        //     .expect("Failed building Smithy");
-        // println!("{:?}", result.projection_plugin_path("source", "test-rust-codegen").as_os_str());
-        //
+        assert_eq!(shape.width, 52);
+        assert_eq!(shape.height, 50);
+    }
+
+    #[test]
+    fn test_added_other() {
+        let generated = Generated {
+            a: 2
+        };
+        assert_eq!(generated.a, 2);
     }
 }
