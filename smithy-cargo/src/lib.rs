@@ -211,7 +211,7 @@ impl SmithyBuild {
             args.push("model/".into());
         }
         for model in &self.models {
-            println!("cargo:rerun-if-changed={:?}", model.as_os_str());
+            println!("cargo:rerun-if-changed={}", model.display());
             args.push(model.into());
         }
         args

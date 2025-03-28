@@ -22,40 +22,43 @@ cargo new smithy-cargo-example \
 && cargo add --build smithy-cargo
 ```
 
-Next, add a [`smithy-build`](https://smithy.io/2.0/guides/smithy-build-json.html#smithy-build-json) config file to the root of the project.
-This config file configures how Smithy will build your models.
+Next, add a [`smithy-build`](https://smithy.io/2.0/guides/smithy-build-json.html#smithy-build-json) config file to the 
+root of the project. This config file determines how Smithy will build your models.
 
-Now, add any smithy models we want to build to a `model/` directory within our cargo project. For example:
+Now, add any smithy models we want to build to a `model/` directory within our cargo project.
+`smithy-cargo` will automatically discover any smithy files within the `model/` directory
+and include them as sources for the Smithy build.
 
-```smithy
-// model/main.smithy
-service Example {
-    version: "05-15-1995"
+Finally, configure `smithy-cargo` to run as part of your cargo build script (`build.rs`): 
+
+```rust
+use smithy_cargo::SmithyBuild;
+
+fn main() {
+    SmithyBuild::new().execute().expect("Failed to build Smithy models");
 }
 ```
 
-`smithy-cargo` will automatically discover any smithy files within the `model/` directory 
-and include them as sources for the Smithy build.
-
-Your fully configured cargo project should now look like:
+Your fully configured cargo project should now look something like:
 ```console 
 .
 ├── Cargo.toml
 ├── build.rs
 ├── model
-│   └── main.smithy
+│   └── a.smithy
 ├── smithy-build.json
 └── src
     └── main.rs
 ```
 
-To run the Smithy build simply
-
+To run the Smithy build, just run `cargo build` as you would normally and the smithy build 
+will be executed by the build script.
 
 ## Including generated Rust code
 > [!WARNING]
-> This package does not provide any Smithy code generation plugins for rust on its own, it just provides a means 
-> to execute such plugins.
+> This package does not provide any Smithy code generation plugins for rust on its own. You 
+> will still need to add a rust codegen plugin (such as [smithy4rs](https://github.com/mellemahp/smithy4rs)) 
+> to actually generate rust code
 
 Your Smithy build may use a [build plugin](https://smithy.io/2.0/guides/smithy-build-json.html#plugins) 
 to generate Rust code that you want to include as part of your crate.

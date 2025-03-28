@@ -13,5 +13,7 @@ fn main() {
         .unwrap();
     println!("cargo::rerun-if-changed=test-code-generator");
 
-    SmithyBuild::new().execute().expect("Smithy Build failed");
+    SmithyBuild::new()
+        .execute()
+        .expect("Smithy Build failed");
 }
