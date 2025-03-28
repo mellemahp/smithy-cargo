@@ -26,6 +26,8 @@ pub struct SmithyBuild {
     // Determines if debug logging should be printed by smithy CLI. Uses the
     // `CARGO_LOG` log level by default.
     debug: bool,
+    // Automatically run `smithy format` on any discovered smithy source files. Default true.
+    format: bool,
     // Suppress printing of build output. Default false.
     quiet: bool,
     // Ignore unknown traits when validating models.
@@ -53,6 +55,7 @@ impl SmithyBuild {
                 Err(_) => false,
             },
             force_color: true,
+            format: true,
             quiet: false,
             allow_unknown_traits: false,
             env: vec![],
@@ -124,6 +127,12 @@ impl SmithyBuild {
         self
     }
 
+    /// Enable/Disable automatic formatting of smithy files.
+    pub fn format(&mut self) -> &mut SmithyBuild {
+        self.format = true;
+        self
+    }
+
     /// Silence output except errors.
     pub fn quiet(&mut self) -> &mut SmithyBuild {
         self.quiet = true;
@@ -147,7 +156,7 @@ impl SmithyBuild {
         self
     }
 
-    fn args(&self) -> Vec<OsString> {
+    fn build_args(&self) -> Vec<OsString> {
         let mut args = vec![OsString::from("build")];
 
         // Set output directory
@@ -175,18 +184,26 @@ impl SmithyBuild {
         if self.no_config {
             args.push("--no-config".into())
         };
-        if self.debug {
-            args.push("--debug".into());
-        }
-        if self.force_color {
-            args.push("--force-color".into());
-        }
-        if self.quiet {
-            args.push("--quiet".into())
-        };
         if self.allow_unknown_traits {
             args.push("--aut".into())
         };
+        if self.force_color {
+            args.push("--force-color".into());
+        }
+
+        args.append(&mut self.common_args());
+
+        args
+    }
+
+    fn common_args(&self) -> Vec<OsString> {
+        let mut args = vec![];
+        if self.debug {
+            args.push("--debug".into());
+        }
+        if self.quiet {
+            args.push("--quiet".into())
+        }
 
         // Add models, starting with model/ default dir if it exists
         if self.path.join("model").exists() {
@@ -200,10 +217,28 @@ impl SmithyBuild {
         args
     }
 
+    fn format_args(&self) -> Vec<OsString> {
+        let mut args = vec![OsString::from("build")];
+        // Add models, starting with model/ default dir if it exists
+        args.append(&mut self.common_args());
+        args
+    }
+
     pub fn execute(&self) -> io::Result<Output> {
+        if self.format {
+            if !self.quiet {
+                println!("cargo:warning=\r   \x1b[32;1mFormatting\x1b[0m smithy models");
+            }
+            Command::new("smithy")
+                .current_dir(&self.path)
+                .args(self.format_args())
+                .envs(self.env.clone())
+                .output()
+                .expect("Failed to execute Smithy format");
+        }
         let output = Command::new("smithy")
             .current_dir(&self.path)
-            .args(self.args())
+            .args(self.build_args())
             .envs(self.env.clone())
             .output()
             .expect("Failed to execute Smithy build");
@@ -214,10 +249,7 @@ impl SmithyBuild {
                     .flat_map(wrap)
                     .collect::<Vec<&str>>()
                     .join("\x0C\r\t");
-                println!("cargo:warning=\r   \x1b[32;1mSmithy\x1b[0m build exited with code: {:}\r\x0C\r\t{}",
-                         output.status.code().unwrap_or(-1),
-                         wrapped
-                );
+                println!("cargo:warning=\r   \x1b[32;1mBuilding\x1b[0m smithy models \r\x0C\r\t{}", wrapped);
             }
         }
 
