@@ -24,7 +24,7 @@ overflow-checks = false
 release = false
 
 [workspace.package]
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 
 license-file = "LICENSE"
@@ -34,6 +34,6 @@ keywords = ["build-dependencies", "smithy"]
 categories = ["development-tools::build-utils"]
 
 [workspace.dependencies]
-smithy-cargo = { version = "1.0.0", path = "./smithy-cargo" }
-smithy-cargo-macros = { version = "1.0.0", path = "./smithy-cargo-macros" }
+smithy-cargo = { version = "1.0.1", path = "./smithy-cargo" }
+smithy-cargo-macros = { version = "1.0.1", path = "./smithy-cargo-macros" }
 crabtime = "1.1.1"
