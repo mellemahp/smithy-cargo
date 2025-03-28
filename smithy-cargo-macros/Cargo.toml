@@ -13,4 +13,3 @@ version.workspace = true
 
 [dependencies]
 crabtime.workspace = true
-walkdir.workspace = true

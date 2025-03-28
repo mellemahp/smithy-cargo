@@ -1,16 +1,9 @@
 use std::ffi::{OsStr, OsString};
+use std::{env, io};
 use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
-use std::{env, io};
-
-// Workaround for cargo not printing out log messages from build
-// See: https://github.com/rust-lang/cargo/issues/985#issuecomment-1071667472
-macro_rules! p {
-    ($($tokens: tt)*) => {
-        println!("cargo:warning={}", format!($($tokens)*))
-    }
-}
+use std::str::from_utf8;
 
 #[derive(Default)]
 pub struct SmithyBuild {
@@ -28,12 +21,12 @@ pub struct SmithyBuild {
     configs: Vec<PathBuf>,
     // Disables config discover. Cannot be set if `configs` are provided.
     no_config: bool,
-    // Force the use of ANSI colors in output
+    // Force the use of ANSI colors in output. Default true.
     force_color: bool,
     // Determines if debug logging should be printed by smithy CLI. Uses the
     // `CARGO_LOG` log level by default.
     debug: bool,
-    //Force the use of ANSI colors.
+    // Suppress printing of build output. Default false.
     quiet: bool,
     // Ignore unknown traits when validating models.
     allow_unknown_traits: bool,
@@ -59,7 +52,7 @@ impl SmithyBuild {
                 Ok(s) => s == "debug",
                 Err(_) => false,
             },
-            force_color: false,
+            force_color: true,
             quiet: false,
             allow_unknown_traits: false,
             env: vec![],
@@ -214,9 +207,20 @@ impl SmithyBuild {
             .envs(self.env.clone())
             .output()
             .expect("Failed to execute Smithy build");
-        if self.quiet || !output.status.success() {
-            p!("\n{}", String::from_utf8(output.stderr.clone()).unwrap());
+        if !self.quiet {
+            if let Ok(output_str) = from_utf8(output.stderr.as_slice()) {
+                let wrapped = output_str
+                    .split("\n")
+                    .flat_map(wrap)
+                    .collect::<Vec<&str>>()
+                    .join("\x0C\r\t");
+                println!("cargo:warning=\r   \x1b[32;1mSmithy\x1b[0m build exited with code: {:}\r\x0C\r\t{}",
+                         output.status.code().unwrap_or(-1),
+                         wrapped
+                );
+            }
         }
+
         if !output.status.success() {
             return Err(io::Error::new(ErrorKind::Other, "Smithy build failed"));
         }
@@ -229,4 +233,10 @@ impl SmithyBuild {
 
         Ok(output)
     }
+}
+
+// Wraps output at 80 character length so it looks somewhat nicer.
+fn wrap(line: &str) -> Vec<&str> {
+    line.split_at_checked(80)
+        .map_or_else(|| vec![line], |(a, b)| { let mut data = vec![a]; data.append(&mut wrap(b)); return data })
 }
