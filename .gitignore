@@ -12,10 +12,14 @@ target/
 # Added by cargo
 /target
 
+# Smithy build folder
+**/build/
+
 # Intellij
 .idea/
 *.iml
 *.iws
+*.DS_Store
 
 # Dont commit lock file
 Cargo.lock
