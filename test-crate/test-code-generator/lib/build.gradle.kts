@@ -6,6 +6,12 @@ plugins {
     `java-library`
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 dependencies {
     implementation("software.amazon.smithy:smithy-codegen-core:1.55.0")
 }

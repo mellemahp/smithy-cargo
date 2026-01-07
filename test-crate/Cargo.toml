@@ -5,10 +5,6 @@ version.workspace = true
 publish = false
 edition.workspace = true
 
-[dependencies]
-smithy-cargo-macros.workspace = true
-crabtime.workspace = true
-
 [build-dependencies]
 smithy-cargo.workspace = true
 

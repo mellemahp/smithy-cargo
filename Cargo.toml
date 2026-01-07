@@ -2,12 +2,10 @@
 resolver = "2"
 members = [
     "smithy-cargo",
-    "smithy-cargo-macros",
     "test-crate"
 ]
 default-members = [
     "smithy-cargo",
-    "smithy-cargo-macros",
     "test-crate"
 ]
 
@@ -24,7 +22,7 @@ overflow-checks = false
 release = false
 
 [workspace.package]
-version = "1.0.1"
+version = "1.1.0"
 edition = "2024"
 
 license-file = "LICENSE"
@@ -34,6 +32,4 @@ keywords = ["build-dependencies", "smithy"]
 categories = ["development-tools::build-utils"]
 
 [workspace.dependencies]
-smithy-cargo = { version = "1.0.1", path = "./smithy-cargo" }
-smithy-cargo-macros = { version = "1.0.1", path = "./smithy-cargo-macros" }
-crabtime = "1.1.1"
+smithy-cargo = { version = "1.1.0", path = "./smithy-cargo" }

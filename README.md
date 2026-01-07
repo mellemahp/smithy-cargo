@@ -77,28 +77,21 @@ For example the following `smithy-build` config:
 ```
 Might generate a number of `.rs` files as build artifacts.
 
-The `smithy-cargo-macros` package provides a `add_smithy_files` macro to 
-make it easy to include generated rust code in your crate. 
-
-To use the macro, add the following dependencies to your `Cargo.toml`:
-
-```toml 
-[dependencies]
-smithy-cargo-macros = "<VERSION>"
-crabtime = "<VERSION>"
-```
-
-Then apply the `add_smithy_files` macro within your rust code to include the generated 
-artifacts.
+We can use the built-in `include` macro and the `$SMITHY_OUTPUT_DIR` 
+environment variable added by the smithy-cargo build tool to quickly add 
+generated files to our project:
 
 ```rust
-use smithy_cargo_macros::add_smithy_files;
 
 // Module containing all of our generated Smithy shapes
 mod shapes {
-    // Adds generated files from the "example-rust-codegen" plugin in the "source" projection. 
+    // Adds generated file from the "example-rust-codegen" plugin in the "source" projection. 
     // Note: the "source" projection is the default projection for Smithy.
-    add_smithy_files!("source", "example-rust-codegen");
+    include!(concat!(env!("SMITHY_OUTPUT_DIR"),
+        "/", "source", // <- Projection name
+        "/", "example-rust-codegen", // <- Plugin name
+        "/", "example.rs") // <- Generated file to include
+    );
 }
 
 fn my_function(string: String) {

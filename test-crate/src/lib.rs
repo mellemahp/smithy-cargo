@@ -1,9 +1,10 @@
-
 // Import generated shapes.
-pub mod shapes {
-    use smithy_cargo_macros::add_smithy_files;
-
-    add_smithy_files!("source", "test-rust-codegen");
+mod shapes {
+    include!(concat!(env!("SMITHY_OUTPUT_DIR"),
+        "/", "source",
+        "/", "test-rust-codegen",
+        "/", "demo.rs")
+    );
 }
 
 #[cfg(test)]
@@ -18,11 +19,5 @@ mod tests {
         };
         assert_eq!(shape.width, 52);
         assert_eq!(shape.height, 50);
-    }
-
-    #[test]
-    fn test_added_other() {
-        let generated = shapes::Generated { a: 2 };
-        assert_eq!(generated.a, 2);
     }
 }
