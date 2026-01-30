@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="logo" width="300" src="logo.svg"/>
+<img alt="logo" width="300" src="./logo.svg"/>
 </div>
 <h1 align="center">smithy-cargo</h1>
 <p align="center">
@@ -134,20 +134,20 @@ fn my_function(string: String) {
 
 To configure the Smithy-build process, use one of the following configuration methods on `SmithyBuild` struct:  
 
-| config method            | description                                                             | default                                                                                   |
-|--------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| `path("/path/")`         | Set the relative path to use as the root for the Smithy build process   | crate root dir                                                                            |
-| `out_dir("/path/")`      | Sets the output directory for the Smithy Build.                         | `$OUT_DIR/smithy` or the setting in the `smithy-build.json`                               |
-| `projection("name")`     | Sets the projection to use for the Smithy build                         | `source`                                                                                  |
-| `plugin("name")`         | Sets a single plugin to build. If left unset, all plugins will be built | `None`                                                                                    |
-| `model("/path/")`        | Adds a model file to build discovery path. Can be called repeatedly     | By default, any models in the `model/` directory are added.                               |
-| `config("/path/")`       | Add a smithy-build config                                               | `smithy-build.json` config at root of crate.                                              |
-| `no_config()`            | Disable use of config file                                              | `false`                                                                                   |
-| `debug()`                | Enables debug printing in Smithy build output                           | the `$CARGO_LOG` environment variable is scraped to determine whether to set this or not. |
-| `format(true/false)`     | Whether to enable/disable formatting                                    | `true`                                                                                    |
-| `quiet()`                | Disables all output except errors                                       | N/A                                                                                       |
-| `allow_unknown_traits()` | Ignore unknown traits when validating models                            | N/A                                                                                       |
-| `env("key", "val")`      | Configure an environment variable for the Smithy build process.         | N/A                                                                                       |
+| config method            | description                                                                | default                                                                                   |
+|--------------------------|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| `path("/path/")`         | Set the relative path to use as the root for the Smithy build process      | crate root dir                                                                            |
+| `out_dir("/path/")`      | Sets the output directory for the Smithy Build.                            | `$OUT_DIR/smithy` or the setting in the `smithy-build.json`                               |
+| `projection("name")`     | Sets the projection to use for the Smithy build                            | `source`                                                                                  |
+| `plugin("name")`         | Sets a single plugin to build. If left unset, all plugins will be built    | `None`                                                                                    |
+| `model("/path/")`        | Adds a model file to build discovery path. Repeatable                      | By default, any models in the `model/` directory are added.                               |
+| `config("/path/")`       | Add a smithy-build config                                                  | `smithy-build.json` config at root of crate.                                              |
+| `no_config()`            | Disable use of config file                                                 | `false`                                                                                   |
+| `debug()`                | Enables debug printing in Smithy build output                              | the `$CARGO_LOG` environment variable is scraped to determine whether to set this or not. |
+| `format(true/false)`     | Whether to enable/disable formatting                                       | `true`                                                                                    |
+| `quiet()`                | Disables all output except errors                                          | N/A                                                                                       |
+| `allow_unknown_traits()` | Ignore unknown traits when validating models                               | N/A                                                                                       |
+| `env("key", "val")`      | Configure an environment variable for the Smithy build process. Repeatable | N/A                                                                                       |
 
 
 ## License
