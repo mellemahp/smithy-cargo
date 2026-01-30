@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="logo" width="300" src="./logo.svg"/>
+<img alt="logo" width="200" src="./logo.svg"/>
 </div>
 <h1 align="center">smithy-cargo</h1>
 <p align="center">
