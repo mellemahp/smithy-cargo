@@ -127,8 +127,6 @@
     <radialGradient id="radial-gradient-16" cx="104.4" cy="326.56" fx="104.4" fy="326.56" r="2.86" xlink:href="#radial-gradient"/>
     <filter id="outer-glow-1" x="175.59" y="142.71" width="189.84" height="235.68" filterUnits="userSpaceOnUse">
       <feOffset dx="0" dy="0"/>
-      <feGaussianBlur result="blur" stdDeviation="5"/>
-      <feFlood flood-color="#000" flood-opacity=".84"/>
       <feComposite in2="blur" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
